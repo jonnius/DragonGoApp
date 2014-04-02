@@ -9,6 +9,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.engio.mbassy.listener.Handler;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,6 +43,11 @@ public class ServerConnection {
 	private String u,p,server;
 	private HttpClient httpclient=null;
 
+	@Handler
+	public void handleMessage(EventManager.EventRequestLogin msg) {
+	    System.out.println("handle event "+msg);
+	}
+	
 	/**
 	 * We define this interface so that all logging info can be simply displayed on the console,
 	 * or shown as Android Toasts !
@@ -94,6 +101,9 @@ public class ServerConnection {
 		//			GoJsActivity.main.debugdevel=0;
 		//		}
 		u=userlogin; p=userpwd;
+		
+		final EventManager em = EventManager.getEventManager();
+		em.bus.subscribe(this);
 	}
 
 	/**
